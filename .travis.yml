@@ -67,7 +67,7 @@ jobs:
       env: DISTRO=Ubuntu1910
     - os: linux
       if: type = cron
-      env: DISTRO=Debian96
+      env: DISTRO=Debian101
     - os: linux
       if: type = cron
       env: DISTRO=Fedora31 CI_BUILD_TYPE=coverity
