@@ -1150,7 +1150,7 @@ _x11_vcard_send(char *target EINA_UNUSED, void *data EINA_UNUSED, int size EINA_
    sel = *(Sel_Manager_Selection **)data;
    if (data_ret)
      {
-        char *s;        
+        char *s;
 
         s = malloc(sel->data.len + 1);
         if (!s) return EINA_FALSE;
@@ -5467,9 +5467,9 @@ _efl_ui_selection_manager_efl_object_constructor(Eo *obj, Efl_Ui_Selection_Manag
      {
         for (i = 0; i < SELECTION_N_ATOMS; i++)
            {
-              pd->atom_list[i].x_atom = ecore_x_atom_get(pd->atom_list[i].name);
+              /*pd->atom_list[i].x_atom = ecore_x_atom_get(pd->atom_list[i].name);
               ecore_x_selection_converter_atom_add
-                 (pd->atom_list[i].x_atom, pd->atom_list[i].x_converter);
+                 (pd->atom_list[i].x_atom, pd->atom_list[i].x_converter);*/
            }
         pd->notify_handler = ecore_event_handler_add(ECORE_X_EVENT_SELECTION_NOTIFY,
                                                      _efl_sel_manager_x11_selection_notify, pd);
