@@ -3334,7 +3334,7 @@ _edje_vector_load_json(Edje *ed, Edje_Real_Part *ep, const char *key)
         json_data = (char *)eet_read(ed->file->ef, key, &json_data_len);
         json_data[json_data_len] = '\0';
         file = eina_file_virtualize(NULL, json_data, json_data_len + 1, EINA_FALSE);
-        efl_file_mmap_set(ep->object, file, NULL);
+        efl_file_simple_mmap_load(ep->object, file, NULL);
 
         if (ep->typedata.vector->json_virtual_file)
           eina_file_close(ep->typedata.vector->json_virtual_file);
