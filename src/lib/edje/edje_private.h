@@ -2046,7 +2046,6 @@ struct _Edje_Real_Part_Swallow
 struct _Edje_Real_Part_Vector
 {
    Eo        *anim;
-   Eo        *player;
    Eina_File *json_virtual_file;
    char      *json_data;
    int        start_frame;

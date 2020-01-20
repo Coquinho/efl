@@ -3273,10 +3273,9 @@ _edje_image_recalc_apply(Edje *ed, Edje_Real_Part *ep, Edje_Calc_Params *p3, Edj
 }
 
 static void
-_edje_vector_animation_running_cb(void *data EINA_UNUSED, const Efl_Event *event)
+_edje_vector_animation_running_cb(void *data, const Efl_Event *event)
 {
-   Efl_Canvas_Animation_Player_Event_Running *event_running = event->info;
-   double pos = event_running->progress;
+   double pos = *((double*)event->info);
    Edje_Real_Part *ep = (Edje_Real_Part *)data;
    int frame, frame_count;
 
@@ -3300,11 +3299,13 @@ _edje_vector_animation_running_cb(void *data EINA_UNUSED, const Efl_Event *event
              else
                ep->typedata.vector->start_frame = 0;
 
-             efl_player_playing_set(ep->typedata.vector->player, EINA_TRUE);
+             efl_canvas_object_animation_start(ep->object,
+                                               ep->typedata.vector->anim,
+                                               1.0, 0.0);
           }
         else
           {
-             efl_player_playing_set(ep->typedata.vector->player, EINA_FALSE);
+             efl_canvas_object_animation_stop(ep->object);
           }
      }
 }
@@ -3323,17 +3324,9 @@ _edje_vector_load_json(Edje *ed, Edje_Real_Part *ep, const char *key)
      {
         Eo *anim = efl_add(EFL_CANVAS_ANIMATION_CLASS, ed->base.evas);
         ep->typedata.vector->anim = anim;
-     }
-
-   if (ep->typedata.vector->player == NULL)
-     {
-        /*
-           Eo *player = efl_add(EFL_CANVAS_ANIMATION_PLAYER_CLASS, ed->base.evas);
-           efl_animation_player_animation_set(player, ep->typedata.vector->anim);
-           efl_event_callback_add(player, EFL_ANIMATION_PLAYER_EVENT_RUNNING,
-           _edje_vector_animation_running_cb, ep);
-           ep->typedata.vector->player = player;
-         */
+        efl_event_callback_add(ep->object,
+                               EFL_CANVAS_OBJECT_ANIMATION_EVENT_ANIMATION_PROGRESS_UPDATED,
+                               _edje_vector_animation_running_cb, ep);
      }
 
    if (ep->typedata.vector->current_id != desc->vg.id)
@@ -3434,7 +3427,7 @@ _edje_part_vector_anim_stop(Edje *ed EINA_UNUSED, Edje_Real_Part *rp)
    Edje_Part_Description_Vector *desc = (Edje_Part_Description_Vector *)rp->chosen_description;
    double frame_count = efl_gfx_frame_controller_frame_count_get(rp->object);
 
-   efl_player_playing_set(rp->typedata.vector->player, EINA_FALSE);
+   efl_canvas_object_animation_stop(rp->object);
    efl_gfx_frame_controller_frame_set(rp->object, (int)(frame_count * desc->vg.frame));
    rp->typedata.vector->is_playing = EINA_FALSE;
 }
@@ -3442,7 +3435,7 @@ _edje_part_vector_anim_stop(Edje *ed EINA_UNUSED, Edje_Real_Part *rp)
 void
 _edje_part_vector_anim_pause(Edje *ed EINA_UNUSED, Edje_Real_Part *rp)
 {
-   efl_player_playing_set(rp->typedata.vector->player, EINA_FALSE);
+   efl_canvas_object_animation_pause_set(rp->object, EINA_TRUE);
 }
 
 void
@@ -3451,7 +3444,7 @@ _edje_part_vector_anim_resume(Edje *ed EINA_UNUSED, Edje_Real_Part *rp)
    if (rp->typedata.vector->is_playing)
      {
         rp->typedata.vector->start_frame = efl_gfx_frame_controller_frame_get(rp->object);
-        efl_player_playing_set(rp->typedata.vector->player, EINA_TRUE);
+        efl_canvas_object_animation_pause_set(rp->object, EINA_FALSE);
      }
 }
 
@@ -3462,7 +3455,7 @@ _edje_part_vector_anim_play(Edje *ed EINA_UNUSED, Edje_Real_Part *rp, Eina_Bool 
    rp->typedata.vector->loop = loop;
    rp->typedata.vector->start_frame = efl_gfx_frame_controller_frame_get(rp->object);
    rp->typedata.vector->is_playing = EINA_TRUE;
-   efl_player_playing_set(rp->typedata.vector->player, EINA_TRUE);
+   efl_canvas_object_animation_start(rp->object, rp->typedata.vector->anim, 1.0, 0.0);
 }
 
 static Edje_Real_Part *
