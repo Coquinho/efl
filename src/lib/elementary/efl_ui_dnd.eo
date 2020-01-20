@@ -1,7 +1,17 @@
-import efl_ui_dnd_types;
+import eina_types;
 
-mixin @beta Efl.Ui.Dnd {
-   data: null;
+struct Efl.Ui.Dnd_Event {
+   position : Eina.Position2D;
+   seat : uint;
+   available_types : accessor<string>;
+}
+
+struct Efl.Ui.Dnd_Drop_Event {
+   dnd : Efl.Ui.Dnd_Event;
+   action : string;
+}
+
+mixin @beta Efl.Ui.Dnd requires Efl.Object {
    methods {
       drag_start {
          [[Start a drag and drop process at the drag side.
@@ -11,19 +21,11 @@ mixin @beta Efl.Ui.Dnd {
               - EFL_UI_DND_EVENT_DRAG_DONE
          ]]
          params {
-            @in format: Efl.Ui.Selection_Format; [[The data format]]
-            @in data: Eina.Slice; [[The drag data]]
-            @in action: Efl.Ui.Selection_Action; [[Action when data is transferred]]
-            @in icon_func: Efl.Dnd.Drag_Icon_Create; [[Function pointer to create icon]]
+            content : Eina.Content @by_ref;
+            @in action: string; [[Action when data is transferred]]
             @in seat: uint; [[Specified seat for multiple seats case.]]
          }
-      }
-      drag_action_set {
-         [[Set the action for the drag]]
-         params {
-            @in action: Efl.Ui.Selection_Action; [[Drag action]]
-            @in seat: uint; [[Specified seat for multiple seats case.]]
-         }
+         return : Efl.Content;
       }
       drag_cancel {
          [[Cancel the on-going drag]]
@@ -31,33 +33,26 @@ mixin @beta Efl.Ui.Dnd {
             @in seat: uint; [[Specified seat for multiple seats case.]]
          }
       }
-      drop_target_add {
-         [[Make the current object as drop target.
-           There are four events emitted:
-            - EFL_UI_DND_EVENT_DRAG_ENTER
-            - EFL_UI_DND_EVENT_DRAG_LEAVE
-            - EFL_UI_DND_EVENT_DRAG_POS
-            - EFL_UI_DND_EVENT_DRAG_DROP.]]
+      drop_data_get {
+         [[Get the data from the object that has selection]]
          params {
-            @in format: Efl.Ui.Selection_Format; [[Accepted data format]]
-            @in seat: uint; [[Specified seat for multiple seats case.]]
+           seat : uint;
+           acceptable_types : iterator<string>;
          }
-      }
-      drop_target_del {
-         [[Delete the dropable status from object]]
-         params {
-            @in format: Efl.Ui.Selection_Format; [[Accepted data format]]
-            @in seat: uint; [[Specified seat for multiple seats case.]]
-         }
+         return : future<Eina.Content> @move;
       }
    }
    events {
-      /* FIXME: This is not very future-proof. Better return a struct. */
-      drag,accept: ptr(bool); [[accept drag data]]
-      drag,done: void; [[drag is done (mouse up)]]
-      drag,enter: void; [[called when the drag object enters this object]]
-      drag,leave: void; [[called when the drag object leaves this object]]
-      drag,pos: Efl.Dnd.Drag_Pos; [[called when the drag object changes drag position]]
-      drag,drop: Efl.Ui.Selection_Data; [[called when the drag object dropped on this object]]
+      drop,enter : Efl.Ui.Dnd_Event;
+      drop,leave : Efl.Ui.Dnd_Event;
+      drop,pos : Efl.Ui.Dnd_Event;
+      drop,drop : Efl.Ui.Dnd_Event;
+      drag,start : void;
+      drag,finished : bool;
+   }
+   implements {
+      Efl.Object.constructor;
+      Efl.Object.invalidate;
+      Efl.Object.finalize;
    }
 }

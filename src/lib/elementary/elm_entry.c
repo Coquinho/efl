@@ -708,7 +708,7 @@ _selection_data_cb(void *data EINA_UNUSED,
         char *entry_tag;
         int len;
         static const char *tag_string =
-           "<item absize=240x180 href=file://%s></item>";
+           "<item absize=240x180 href=%s></item>";
 
         len = strlen(tag_string) + strlen(buf);
         entry_tag = alloca(len + 1);
@@ -1731,7 +1731,7 @@ _menu_call(Evas_Object *obj)
         const char *context_menu_orientation;
         Eina_Bool ownersel;
 
-        ownersel = elm_selection_selection_has_owner(obj);
+        ownersel = elm_cnp_clipboard_selection_has_owner(obj);
         if (!sd->items)
           {
              /* prevent stupid blank hoversel */
