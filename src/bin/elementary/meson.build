@@ -169,6 +169,7 @@ elementary_test_src = [
 
 if sys_windows == false
   link_args = ['-rdynamic', '-fPIC', '-pie']
+  link_args_lib = ['-rdynamic', '-fPIC']
   package_c_args =  package_c_args + ['-fPIC']
 else
   link_args = []
@@ -194,7 +195,7 @@ library('elementary_test',
           '-Delementary_test_LIB_DIR="'+dir_lib+'"',
           '-Delementary_test_DATA_DIR="'+join_paths(dir_data,'elementary')+'"'
         ],
-        link_args: ['-rdynamic', '-fPIC']
+        link_args: link_args_lib
 )
 
 elementary_config_src = [
