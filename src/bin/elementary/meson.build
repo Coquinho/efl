@@ -173,6 +173,7 @@ if sys_windows == false
   package_c_args =  package_c_args + ['-fPIC']
 else
   link_args = []
+  link_args_libs = []
 endif
 elementary_test = executable('elementary_test',
         elementary_test_src,
