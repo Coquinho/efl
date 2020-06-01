@@ -22,6 +22,7 @@
 #include <stdarg.h>
 
 #include "eina_types.h"
+#include "eina_api.h"
 
 
 /**
