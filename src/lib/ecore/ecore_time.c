@@ -5,7 +5,11 @@
 #define EFL_LOOP_PROTECTED
 
 #include <stdlib.h>
-#include <sys/time.h>
+#ifndef _WIN32
+# include <sys/time.h>
+#else
+# include <evil_private.h>
+#endif
 
 #if defined(__APPLE__) && defined(__MACH__)
 # include <mach/mach_time.h>
@@ -51,14 +55,14 @@ ecore_time_get(void)
 EAPI double
 ecore_time_unix_get(void)
 {
-#ifdef HAVE_GETTIMEOFDAY
+//#ifdef HAVE_GETTIMEOFDAY
    struct timeval timev;
 
    gettimeofday(&timev, NULL);
    return (double)timev.tv_sec + (((double)timev.tv_usec) / 1000000);
-#else
-# error "Your platform isn't supported yet"
-#endif
+//#else
+//# error "Your platform isn't supported yet"
+//#endif
 }
 
 EAPI double

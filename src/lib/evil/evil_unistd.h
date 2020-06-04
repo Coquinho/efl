@@ -28,6 +28,13 @@ EAPI int execvp(const char *file, char *const argv[]);
 #define W_OK    2       /* Test for write permission.  */
 #define X_OK    0       /* execute permission, originally '1', just a bypass here*/
 #define F_OK    0       /* Test for existence.  */
+
+#define STDIN_FILENO 0
+#define STDOUT_FILENO 1
+#define STDERR_FILENO 2
+
+EAPI int ftruncate(int fd, off_t size);
+
 #else
 #include <unistd.h>
 #endif // _WIN32
@@ -53,6 +60,8 @@ EAPI int execvp(const char *file, char *const argv[]);
  * Supported OS: Windows XP.
  */
 EAPI double evil_time_get(void);
+
+EAPI void usleep(__int64 usec);
 
 /*
  * Sockets and pipe related functions

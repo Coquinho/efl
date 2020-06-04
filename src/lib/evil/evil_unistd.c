@@ -57,6 +57,13 @@ execvp(const char *file, char *const argv[])
    return _execvp(file, (const char *const *)argv);
 }
 
+int
+ftruncate(int fd, off_t size)
+{
+   // Fix-me: not implemented
+   return 0;
+}
+
 
 /*
  * Time related functions
@@ -71,6 +78,20 @@ evil_time_get(void)
    QueryPerformanceCounter(&count);
 
    return (double)_evil_time_second + (double)(count.QuadPart - _evil_time_count)/ (double)_evil_time_freq;
+}
+
+void
+usleep(__int64 usec) 
+{ 
+   HANDLE timer; 
+   LARGE_INTEGER ft; 
+
+   ft.QuadPart = -(10*usec); // Convert to 100 nanosecond interval, negative value indicates relative time
+
+   timer = CreateWaitableTimer(NULL, TRUE, NULL); 
+   SetWaitableTimer(timer, &ft, 0, NULL, NULL, 0); 
+   WaitForSingleObject(timer, INFINITE); 
+   CloseHandle(timer); 
 }
 
 

@@ -3,6 +3,12 @@
 
 #include <Efl_Config.h>
 
+#ifndef _MSC_VER
+# define ECORE_PID pid_t
+#else
+# define ECORE_PID DWORD
+#endif
+
 /**
  * @defgroup Ecore_Init_Group Ecore initialization, shutdown functions and reset on fork.
  * @ingroup Ecore
@@ -1064,7 +1070,7 @@ struct _Ecore_Exe_Event_Add
  */
 struct _Ecore_Exe_Event_Del
 {
-   pid_t      pid; /**< The process ID of the process that exited */
+   ECORE_PID      pid; /**< The process ID of the process that exited */
    int        exit_code; /**< The exit code of the process */
    Ecore_Exe *exe; /**< The handle to the exited process, or @c NULL if not found */
    int        exit_signal; /**< The signal that caused the process to exit */

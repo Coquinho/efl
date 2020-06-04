@@ -248,7 +248,13 @@ config_h.set_quoted('PACKAGE_STRING', meson.project_name() + ' ' + meson.project
 config_h.set_quoted('PACKAGE_NAME', meson.project_name())
 config_h.set_quoted('PACKAGE_BIN_DIR', dir_bin)
 config_h.set_quoted('PACKAGE_LIB_DIR', dir_lib)
-config_h.set_quoted('PACKAGE_SRC_DIR', meson.source_root())
+if sys_windows
+  pkg_build_dir = '/'.join(meson.source_root().split('\\'))
+  message('PACKAGE_SRC_DIR: @0@'.format(pkg_build_dir))
+  config_h.set_quoted('PACKAGE_SRC_DIR', pkg_build_dir)
+else
+  config_h.set_quoted('PACKAGE_SRC_DIR', meson.source_root())
+endif
 if sys_windows
   pkg_build_dir = '/'.join(meson.current_build_dir().split('\\'))
   message('PACKAGE_BUILD_DIR: @0@'.format(pkg_build_dir))
@@ -440,7 +446,7 @@ subprojects = [
 ['eet'              ,[]                    , false,  true,  true, false,  true,  true,  true, ['eina', 'emile', 'efl'], []],
 ['ecore'            ,[]                    , false,  true, false, false, false, false,  true, ['eina', 'eo', 'efl'], ['buildsystem']],
 ['eldbus'           ,[]                    , false,  true,  true, false,  true,  true,  true, ['eina', 'eo', 'efl'], []],
-['ecore'            ,[]                    ,  true, false, false, false,  true,  true,  true, ['eina', 'eo', 'efl'], []], #ecores modules depend on eldbus
+['ecore'            ,[]                    ,  true, false, false, false, false,  true,  true, ['eina', 'eo', 'efl'], []], #ecores modules depend on eldbus
 ['ecore_audio'      ,['audio']             , false,  true, false, false, false, false,  true, ['eina', 'eo'], []],
 ['ecore_avahi'      ,['avahi']             , false,  true, false, false, false,  true, false, ['eina', 'ecore'], []],
 ['ecore_con'        ,[]                    , false,  true,  true, false,  true, false,  true, ['eina', 'eo', 'efl', 'ecore'], ['http-parser']],
@@ -486,7 +492,6 @@ if sys_windows
     'eldbus',
     'elput',
     # temporarily ignored
-    'ecore',
     'ecore_audio',
     'ecore_avahi',
     'ecore_buffer',

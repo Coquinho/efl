@@ -29,7 +29,7 @@
 
 struct _ecore_exe_dead_exe
 {
-   pid_t pid;
+   ECORE_PID pid;
    char *cmd;
 };
 
@@ -361,7 +361,7 @@ _ecore_exe_shutdown(void)
 }
 
 Ecore_Exe *
-_ecore_exe_find(pid_t pid)
+_ecore_exe_find(ECORE_PID pid)
 {
    Eina_List *itr;
    Ecore_Exe *obj;
