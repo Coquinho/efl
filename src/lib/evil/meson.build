@@ -33,8 +33,12 @@ if target_machine.system() == 'windows'
   secur32 = cc.find_library('secur32')
   uuid = cc.find_library('uuid')
 
-  evil_pub_deps += [psapi, ole32, ws2_32, secur32, uuid]
-  evil_ext_deps += [psapi, ole32, ws2_32, secur32, uuid]
+  evil_deps = [psapi, ole32, ws2_32, secur32, uuid]
+  evil_pub_deps = [psapi, ole32, ws2_32, secur32, uuid]
+  if windows_msvc
+    evil_deps += [pcre_dep, getopt_dep]
+    evil_pub_deps += [pcre_dep, getopt_dep]
+  endif
 
   evil_lib = library('evil', evil_src,
     c_args : package_c_args,
