@@ -1,7 +1,7 @@
-if not sys_windows
-  eina_deps = [dl]
-else
+if  sys_windows and windows_msvc
   eina_deps = [pcre_dep]
+else
+  eina_deps = [dl]
 endif
 
 eina_pub_deps = [thread_dep, m]
