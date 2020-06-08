@@ -31,7 +31,7 @@ host_os = host_machine.system()
 
 if host_os == 'windows'
   # implies that build_machine is windows and it uses the msvc compiler
-  windows_msvc = cc.has_header_symbol('stdio.h', '_MSC_VER');
+  windows_msvc = cc.has_header_symbol('stdio.h', '_MSC_VER')
   if windows_msvc
     nuget_download = meson.get_cross_property('nuget-download')
     if nuget_download
@@ -420,7 +420,7 @@ if sys_osx == true and get_option('lua-interpreter') == 'luajit'
   )
 endif
 
-if windows_msvc and nuget_download
+if sys_windows and windows_msvc and nuget_download
   r = run_command('build/nuget.exe', 'restore', 'win32-deps/packages.config', '-PackagesDirectory', 'win32-deps')
   output = r.stdout().strip()
   if r.returncode() != 0
