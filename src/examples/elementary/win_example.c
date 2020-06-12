@@ -2,7 +2,7 @@
  * gcc -o win_example win_example.c `pkg-config --cflags --libs elementary ecore-x`
  */
 #ifdef HAVE_ELEMENTARY_X
-#pragma message "Entrou no if da definição"
+#pragma message "entrou no if da definição"
 # include <Ecore_X.h>
 #endif
 
@@ -159,10 +159,11 @@ static void
 _force_focus_cb(void *data EINA_UNUSED, Evas_Object *obj EINA_UNUSED, void *event EINA_UNUSED)
 {
 #ifdef HAVE_ELEMENTARY_X
-#pragma message "Entrou no outro if"
+#pragma message "entrou no outro if"
    Ecore_X_Window xwin = elm_win_xwindow_get(data);
    ecore_x_window_focus(xwin);
 #endif
+#pragma message "nao entrou no outro if"
 }
 
 static void
