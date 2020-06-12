@@ -75,7 +75,9 @@ EFL_START_TEST(eina_simple_xml_parser_node_dump)
                        buf[sz] = '\0';
                        char *out = eina_simple_xml_node_dump(&root->base, "  ");
                        //puts(out);
-                       ck_assert_str_eq(out, buf);
+fprintf(stderr, "buf%s\n", buf); fflush(stderr);
+fprintf(stderr, "out%s\n", out); fflush(stderr);
+                      ck_assert_str_eq(out, buf);
                        free(out);
                        eina_simple_xml_node_root_free(root);
                     }
@@ -90,7 +92,7 @@ EFL_END_TEST
 
 EFL_START_TEST(eina_simple_xml_parser_null_node_dump)
 {
-   
+
    char *out = eina_simple_xml_node_dump(NULL, "  ");
    fail_if(out != NULL);
 
