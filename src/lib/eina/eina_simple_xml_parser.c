@@ -1031,6 +1031,7 @@ eina_simple_xml_node_load(const char *buf, unsigned buflen, Eina_Bool strip)
    ctx.current = root;
    eina_simple_xml_parse(buf, buflen, strip, _eina_simple_xml_node_parse, &ctx);
 
+fprintf(stderr, "buf\n%s\n", buf); fflush(stderr);
    return root;
 }
 
