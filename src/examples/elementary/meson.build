@@ -125,6 +125,12 @@ examples = [
 
 foreach example : examples
   executable(example, example + '.c', dependencies: [elementary, ecore, eio, m])
+  if example == 'win_example'
+    message('o que que o elementary tem?')
+    if ecore_x in elementary_deps
+      message('Elementary tem o ecore_x')
+    endif
+  endif
 endforeach
 if get_option('bindings').contains('cxx')
   cxx_examples = [

@@ -2,8 +2,10 @@
  * gcc -o win_example win_example.c `pkg-config --cflags --libs elementary ecore-x`
  */
 #ifdef HAVE_ELEMENTARY_X
+# warning "entrou no primeiro if"
 # include <Ecore_X.h>
 #endif
+#warning "nao entrou no primeiro if"
 
 #include <Elementary.h>
 
@@ -158,9 +160,11 @@ static void
 _force_focus_cb(void *data EINA_UNUSED, Evas_Object *obj EINA_UNUSED, void *event EINA_UNUSED)
 {
 #ifdef HAVE_ELEMENTARY_X
+# warning "entrou no segundo if"
    Ecore_X_Window xwin = elm_win_xwindow_get(data);
    ecore_x_window_focus(xwin);
 #endif
+#warning "não entrou no segundo if"
 }
 
 static void
