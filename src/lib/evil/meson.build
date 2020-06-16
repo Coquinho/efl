@@ -1,7 +1,12 @@
 if target_machine.system() == 'windows'
   evil_deps = []
-  evil_pub_deps = [getopt_dep, pcre_dep]
-  evil_ext_deps = [getopt_dep, pcre_dep]
+  if win_msvc
+    evil_pub_deps = [getopt_dep, pcre_dep]
+    evil_ext_deps = [getopt_dep, pcre_dep]
+  else
+    evil_pub_deps = []
+    evil_ext_deps = []
+  endif
   evil_src = []
 
   evil_src += files([
