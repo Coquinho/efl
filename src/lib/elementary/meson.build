@@ -985,11 +985,13 @@ endif
 if get_option('x11')
   config_h.set('HAVE_ELEMENTARY_X', '1')
   elementary_deps += ecore_x
+  elementary_pub_deps += ecore_x
 endif
 
 if get_option('wl')
   config_h.set('HAVE_ELEMENTARY_WL2', '1')
   elementary_deps += ecore_wl2
+  elementary_pub_deps += ecore_wl2
   elementary_ext_deps += declare_dependency(
     include_directories: include_directories([join_paths('..', '..', 'modules', 'ecore_evas', 'engines', 'wayland'), join_paths('..', '..', 'lib', 'ecore_wl2')]),
     dependencies : ecore_wl2_internal_headers
@@ -999,16 +1001,19 @@ endif
 if get_option('drm')
   config_h.set('HAVE_ELEMENTARY_DRM', '1')
   elementary_deps += ecore_drm2
+  elementary_pub_deps += ecore_drm2
 endif
 
 if get_option('cocoa')
   config_h.set('HAVE_ELEMENTARY_COCOA', '1')
   elementary_deps += ecore_cocoa
+  elementary_pub_deps += ecore_cocoa
 endif
 
 if sys_windows == true
   config_h.set('HAVE_ELEMENTARY_WIN32', '1')
   elementary_deps += ecore_win32
+  elementary_pub_deps += ecore_win32
 endif
 
 c = configure_file(
