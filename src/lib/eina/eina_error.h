@@ -22,8 +22,6 @@
 #include <stdarg.h>
 
 #include "eina_types.h"
-#include "eina_api.h"
-
 
 /**
  * @page tutorial_error_page Error Tutorial
